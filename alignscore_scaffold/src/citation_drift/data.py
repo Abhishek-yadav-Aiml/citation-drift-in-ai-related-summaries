@@ -31,7 +31,10 @@ def load_jsonl(path):
             if row["example_id"] in seen:
                 errors.append(f"line {line_no}: duplicate example_id")
                 continue
-            if row.get("gold_label") is not None and row["gold_label"] not in ALLOWED_LABELS:
+            label = row.get("gold_label")
+            if label is not None and (
+                not isinstance(label, str) or label not in ALLOWED_LABELS
+            ):
                 errors.append(f"line {line_no}: invalid gold_label")
                 continue
             seen.add(row["example_id"])
