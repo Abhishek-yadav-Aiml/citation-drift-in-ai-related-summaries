@@ -51,7 +51,7 @@ def load_jsonl(path):
             raise ValueError(f"Line {line_no}: evidence must be a string")
 
         status = item["evidence_status"]
-        if status not in ALLOWED_STATUSES:
+        if not isinstance(status, str) or status not in ALLOWED_STATUSES:
             raise ValueError(
                 f"Line {line_no}: evidence_status must be one of {sorted(ALLOWED_STATUSES)}"
             )
@@ -61,7 +61,7 @@ def load_jsonl(path):
             )
 
         label = item.get("gold_label", "UNANNOTATED")
-        if label not in ALLOWED_LABELS:
+        if not isinstance(label, str) or label not in ALLOWED_LABELS:
             raise ValueError(f"Line {line_no}: invalid gold_label {label!r}")
 
         if item["claim_id"] in seen_ids:
