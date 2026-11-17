@@ -1,0 +1,6 @@
+cff-version: 1.2.0
+message: "If you use this repository, please cite it as software and cite the original datasets and models used in your experiments."
+title: "Detecting Citation Drift in AI-Generated Literature Summaries"
+version: 0.1.0
+date-released: 2026-11-18
+type: software
