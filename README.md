@@ -73,11 +73,13 @@ The catalogue contains five bibliographic entries and links to their publisher, 
 
 ```text
 .
-├── alignscore_scaffold/   # Separate AlignScore adapter, tests and Colab notebook
+├── .github/workflows/     # Python-version matrix CI checks
+├── alignscore_scaffold/   # Separate AlignScore helper, tests and Colab notebook
 ├── data/
-│   ├── processed/         # Synthetic claim/evidence examples and JSON schema
-│   └── raw/               # Instructions; no corpus is bundled
-├── docs/                  # Protocol, annotations, data dictionary, references
+│   ├── processed/         # Synthetic examples, JSON schema, annotation template
+│   ├── raw/               # Instructions only; no corpus bundled
+│   └── source_manifest_template.csv
+├── docs/                  # Protocol, labels, references, data-management and verification
 ├── models/                # Instructions only; no model weights
 ├── paper/overleaf/        # IEEE LaTeX source and BibTeX
 ├── prompts/               # Research workflow prompt templates
@@ -108,4 +110,4 @@ For each actual run, retain dataset version and license, model/package versions,
 
 ## Contributing and license
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for development checks and [research_data_management.md](docs/research_data_management.md) for data-handling and release rules. [CHANGELOG.md](CHANGELOG.md) records repository-level changes. The current [LICENSE](LICENSE) is an all-rights-reserved notice; this repository is public to view but is not granted an open-source reuse license. Third-party datasets, papers, checkpoints and tools remain subject to their own terms.
+See [CONTRIBUTING.md](CONTRIBUTING.md) for development checks, [research_data_management.md](docs/research_data_management.md) for data-handling and release rules, and [verification_status.md](docs/verification_status.md) for the latest verified commit and test status. [CHANGELOG.md](CHANGELOG.md) records repository-level changes. The current [LICENSE](LICENSE) is an all-rights-reserved notice; this repository is public to view but is not granted an open-source reuse license. Third-party datasets, papers, checkpoints and tools remain subject to their own terms.
