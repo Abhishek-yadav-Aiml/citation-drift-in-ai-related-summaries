@@ -1,78 +1,47 @@
 # Detecting Citation Drift in AI-Generated Literature Summaries
 
-Research repository for studying claim-level citation support in AI-generated scientific literature summaries.
+A reproducible research scaffold for auditing whether claims in AI-generated scientific literature summaries are supported by the cited papers.
 
-## Research focus
-This project investigates how evidence context (abstract-only versus retrieved full-text passages) affects citation-support assessment, and how retrieval failure can influence verification.
+## What this repository does
+1. Stores summary claims with cited paper IDs and inspected evidence passages.
+2. Records human support labels separately from evidence availability.
+3. Runs a transparent TF-IDF cosine-similarity baseline (a retrieval/similarity signal, **not** a factual-entailment classifier).
+4. Exports claim-level predictions and simple evaluation metrics when gold labels are supplied.
 
-## Repository status
-This repository contains a research scaffold and preliminary documentation. The AlignScore pipeline has **not** been verified end-to-end. The SciFact/DeBERTa experiment described in the report is a separate preliminary experiment; it must not be conflated with AlignScore results.
+## Research safeguards
+- Labels: `SUPPORTED`, `PARTIALLY_SUPPORTED`, `NOT_SUPPORTED_IN_INSPECTED_SOURCE`, `CONTRADICTED`.
+- Evidence availability is separate. An inaccessible or unretrieved paper is **not** evidence that a claim is unsupported.
+- Similarity scores do not establish entailment or truth. All automated scores require human review.
+- Bundled examples are synthetic smoke-test data, not scientific findings.
+- Split by paper, not individual claims, to avoid leakage.
 
-## Contents
-- `src/citation_drift/`: data loading, preprocessing, retrieval helper, scoring adapter, evaluation and plotting utilities
-- `scripts/run_pipeline.py`: pipeline entry point
-- `notebooks/`: Colab-oriented workflow
-- `configs/`: experiment settings and label policy
-- `data/processed/sample_synthetic.jsonl`: synthetic examples for pipeline smoke tests only, not research data
-- `docs/`: research decisions, annotation guidelines and validation report
-- `reports/`: preliminary experiment report
-- `paper/overleaf/`: IEEE-style LaTeX source and BibTeX references
-- `prompts/`: prompt templates used during research workflow
-
-## Important methodological distinctions
-The annotation labels are `SUPPORTED`, `PARTIALLY_SUPPORTED`, `NOT_SUPPORTED_IN_INSPECTED_SOURCE`, and `CONTRADICTED`. Evidence availability is recorded separately. Inaccessible or unretrieved evidence must not be labelled as unsupported.
-
-AlignScore produces a continuous alignment score; the current scaffold does not provide a validated four-class classifier. The DeBERTa NLI numbers in the preliminary report are from a separate SciFact development-set experiment.
-
-## Setup
-Use Python 3.10 in a clean environment. Install the core scaffold dependencies:
-
+## Quick start (Python 3.10+)
 ```bash
 python -m venv .venv
-source .venv/bin/activate  # Windows: .venv\\Scripts\\activate
+source .venv/bin/activate
 python -m pip install --upgrade pip
-pip install -r requirements-core.txt
+pip install -r requirements.txt
+pytest -q
+python scripts/run_baseline.py --input data/processed/sample_claim_evidence.jsonl --output results/sample_predictions.csv
 ```
 
-AlignScore dependencies and checkpoint setup are not yet confirmed. Consult `AI_ASSISTANCE_DEBUGGING_LOG.md` and the validation report before attempting baseline inference. Do not assume that installing core dependencies is sufficient for AlignScore.
+## Input format
+One JSON object per line with `claim_id`, `summary_id`, `paper_id`, `claim`, `evidence`, and `evidence_status`. Optional `gold_label` can be supplied. See `docs/data_dictionary.md`.
 
-## Run tests
+## Layout
+- `src/citation_drift/`: data loading, baseline scoring and evaluation
+- `scripts/`: command-line entry point
+- `data/processed/`: synthetic smoke-test examples
+- `docs/`: annotation policy and experiment protocol
+- `reports/`: report template
+- `notebooks/`: starter notebook
+- `tests/`: unit tests
 
-```bash
-python -m pytest -q
-```
+## Current status
+This is a starter implementation. No real corpus, trained model checkpoint, or validated research result is included. The TF-IDF baseline is intentionally simple and must be compared against human annotations. Add AlignScore/NLI only after verifying dependencies, checkpoint provenance, license and end-to-end execution.
 
-This test command has not yet been confirmed in the target Colab environment; treat it as **TEST REQUIRED** until its output is recorded.
-
-## Run the pipeline
-After installing the required AlignScore dependencies and placing the authorized checkpoint at `models/AlignScore-base.ckpt`, prepare `data/processed/claim_evidence.jsonl` using the schema in the data module and run:
-
-```bash
-python scripts/run_pipeline.py \\
-  --input data/processed/claim_evidence.jsonl \\
-  --output results/alignscore_predictions.csv \\
-  --checkpoint models/AlignScore-base.ckpt \\
-  --device cpu --batch-size 1 --seed 42
-```
-
-**TEST REQUIRED:** the scaffold command, checkpoint compatibility, and end-to-end inference have not been successfully verified. The CLI currently does not parse `configs/experiment.yaml`; command-line arguments are the operative settings. BM25 helper code exists but is not wired as a `--use-bm25` CLI option.
-
-## Data and licenses
-No real research dataset is bundled. The included JSONL is synthetic. Verify the dataset's official version, license, access conditions and redistribution rules before downloading or sharing SciFact, CS-PaperSum, or other corpus files. Model checkpoint weights are not included. Check the upstream model/checkpoint license before use or redistribution.
-
-## Reproducibility and reporting
-Record Python and package versions, OS/runtime, device, checkpoint source and SHA-256, dataset version and license, split IDs, random seed, exact commands, and raw outputs. Keep paper-level grouping to prevent leakage. Select any threshold using development data only and freeze it before test evaluation.
-
-## Limitations
-- AlignScore installation and inference remain unverified.
-- No real research dataset, model checkpoint, or generated predictions are included.
-- The current AlignScore adapter is not a four-class classifier.
-- BM25 helper is not integrated into the pipeline CLI.
-- Configuration YAML is documentation at present; the script does not load it.
-- No end-to-end reproduction or performance claim should be inferred from this scaffold.
-
-## Citation and credits
-See `paper/overleaf/references.bib` for the bibliography used by the draft, and the reports/docs for experiment-specific provenance. Cite original datasets and models according to their official instructions.
+## Research workflow
+Define inclusion criteria; acquire a permitted corpus; generate and preserve summaries; segment atomic claims; map claims to cited papers; inspect source passages; annotate independently; adjudicate; run baselines; evaluate on paper-level splits; report class-wise metrics, macro-F1, coverage, agreement and uncertainty.
 
 ## License
-No project-level open-source license is granted by this repository at present. Dataset, model and paper rights remain with their respective owners. Add an explicit project license only after deciding what you have rights to release.
+See `LICENSE`. Third-party datasets, papers, models and tools remain subject to their own licenses.
