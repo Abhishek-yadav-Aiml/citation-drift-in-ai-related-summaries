@@ -3,8 +3,36 @@ name: tests
 on:
   push:
     branches: [main]
+    paths:
+      - ".github/workflows/**"
+      - "src/**"
+      - "scripts/**"
+      - "tests/**"
+      - "requirements.txt"
+      - "pytest.ini"
+      - "data/processed/**"
+      - "alignscore_scaffold/src/**"
+      - "alignscore_scaffold/scripts/**"
+      - "alignscore_scaffold/tests/**"
+      - "alignscore_scaffold/requirements-core.txt"
+      - "alignscore_scaffold/notebooks/**"
+      - "alignscore_scaffold/data/processed/**"
   pull_request:
     branches: [main]
+    paths:
+      - ".github/workflows/**"
+      - "src/**"
+      - "scripts/**"
+      - "tests/**"
+      - "requirements.txt"
+      - "pytest.ini"
+      - "data/processed/**"
+      - "alignscore_scaffold/src/**"
+      - "alignscore_scaffold/scripts/**"
+      - "alignscore_scaffold/tests/**"
+      - "alignscore_scaffold/requirements-core.txt"
+      - "alignscore_scaffold/notebooks/**"
+      - "alignscore_scaffold/data/processed/**"
   workflow_dispatch:
 
 jobs:
