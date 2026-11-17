@@ -79,14 +79,20 @@ The catalogue contains five bibliographic entries and links to their publisher, 
 │   ├── processed/         # Synthetic examples, JSON schema, annotation template
 │   ├── raw/               # Instructions only; no corpus bundled
 │   └── source_manifest_template.csv
-├── docs/                  # Protocol, labels, references, data-management and verification
+├── docs/                  # Protocol, labels, references, data management and verification
 ├── models/                # Instructions only; no model weights
 ├── paper/overleaf/        # IEEE LaTeX source and BibTeX
 ├── prompts/               # Research workflow prompt templates
 ├── reports/               # Report template and experiment status note
 ├── scripts/               # Root baseline CLI
 ├── src/citation_drift/    # Root TF-IDF baseline package
-└── tests/                 # Root baseline tests
+├── tests/                 # Root baseline tests
+├── CHANGELOG.md
+├── CITATION.cff
+├── CONTRIBUTING.md
+├── LICENSE
+├── pytest.ini
+└── requirements.txt
 ```
 
 ## Verification status
