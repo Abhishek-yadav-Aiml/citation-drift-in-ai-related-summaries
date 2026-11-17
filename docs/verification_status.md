@@ -1,8 +1,9 @@
 # Repository verification status
 
 **Audited branch:** `main`  
-**Latest inspected branch head:** `f23fbe92132d9a263e0da395bf24a8295d6b574f`  
 **Latest verified code-bearing commit:** `9baea4f3d263011c6dd49b45ff2850fcf814ea6d`
+
+The commits after the verified code-bearing commit changed only documentation, README text, schemas and data templates. No executable Python source or test files changed in those later commits.
 
 ## Automated verification
 
@@ -14,12 +15,10 @@ GitHub Actions run [#18](https://github.com/Abhishek-yadav-Aiml/citation-drift-i
 | Root baseline CLI smoke test | 3.10, 3.11, 3.12 | PASS |
 | AlignScore scaffold helper tests | 3.10, 3.11, 3.12 | PASS |
 
-Observed test counts from the successful run:
+Observed test counts:
 - Root test suite: 13 passed.
 - AlignScore scaffold helper suite: 6 passed.
-- Root sample CLI: wrote 5 sample records to the temporary CSV output.
-
-The nine commits between the verified code-bearing commit and the inspected branch head changed only README/documentation, schemas, templates and research data-management notes. No executable Python source or test files changed in those later commits.
+- Root sample CLI: wrote 5 synthetic sample records to the temporary CSV output.
 
 ## What this verification does not establish
 
@@ -31,7 +30,7 @@ The nine commits between the verified code-bearing commit and the inspected bran
 
 ## Current repository assets
 
-The branch contains a root TF-IDF baseline, a separate AlignScore scaffold, two synthetic JSONL examples, two schema files, annotation/source-manifest templates, research and data-management documentation, an IEEE LaTeX draft and its BibTeX bibliography. The source-paper catalogue is metadata and links only; no full-text source-paper PDFs are included.
+The branch contains a root TF-IDF baseline, a separate AlignScore scaffold, synthetic JSONL examples, two schema files, annotation/source-manifest templates, research and data-management documentation, an IEEE LaTeX draft and its BibTeX bibliography. The source-paper catalogue is metadata and links only; no full-text source-paper PDFs are included.
 
 ## Remaining research validation
 
