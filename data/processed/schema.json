@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Citation-drift claim-evidence record",
+  "type": "object",
+  "required": [
+    "claim_id",
+    "summary_id",
+    "paper_id",
+    "claim",
+    "evidence",
+    "evidence_status"
+  ],
+  "properties": {
+    "claim_id": {"type": "string", "minLength": 1},
+    "summary_id": {"type": "string", "minLength": 1},
+    "paper_id": {"type": "string", "minLength": 1},
+    "claim": {"type": "string", "minLength": 1},
+    "evidence": {"type": "string"},
+    "evidence_status": {
+      "type": "string",
+      "enum": ["available", "not_retrieved", "inaccessible", "not_provided"]
+    },
+    "gold_label": {
+      "type": "string",
+      "enum": [
+        "SUPPORTED",
+        "PARTIALLY_SUPPORTED",
+        "NOT_SUPPORTED_IN_INSPECTED_SOURCE",
+        "CONTRADICTED",
+        "UNANNOTATED"
+      ]
+    },
+    "source_location": {"type": "string"},
+    "annotator_id": {"type": "string"},
+    "rationale": {"type": "string"}
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {"evidence_status": {"const": "available"}},
+        "required": ["evidence_status"]
+      },
+      "then": {
+        "properties": {"evidence": {"minLength": 1}}
+      }
+    }
+  ],
+  "additionalProperties": true
+}
