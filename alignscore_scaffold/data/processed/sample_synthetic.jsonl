@@ -1,0 +1,2 @@
+{"example_id":"synthetic001","source_paper_id":"paper_demo_1","claim":"The method uses an attention mechanism.","evidence":"The model architecture includes a multi-head attention layer.","gold_label":"SUPPORTED","partition":"demo"}
+{"example_id":"synthetic002","source_paper_id":"paper_demo_2","claim":"The method uses reinforcement learning.","evidence":"The method is trained using supervised learning.","gold_label":"CONTRADICTED","partition":"demo"}
