@@ -1,21 +1,29 @@
 # Detecting Citation Drift in AI-Generated Literature Summaries
 
-A reproducible research scaffold for auditing whether claims in AI-generated scientific literature summaries are supported by the cited papers.
+Research repository for evaluating whether claims in AI-generated scientific literature summaries are supported by their cited source papers.
 
-## What this repository does
-1. Stores summary claims with cited paper IDs and inspected evidence passages.
-2. Records human support labels separately from evidence availability.
-3. Runs a transparent TF-IDF cosine-similarity baseline (a retrieval/similarity signal, **not** a factual-entailment classifier).
-4. Exports claim-level predictions and simple evaluation metrics when gold labels are supplied.
+## Two distinct code paths
 
-## Research safeguards
-- Labels: `SUPPORTED`, `PARTIALLY_SUPPORTED`, `NOT_SUPPORTED_IN_INSPECTED_SOURCE`, `CONTRADICTED`.
-- Evidence availability is separate. An inaccessible or unretrieved paper is **not** evidence that a claim is unsupported.
-- Similarity scores do not establish entailment or truth. All automated scores require human review.
-- Bundled examples are synthetic smoke-test data, not scientific findings.
-- Split by paper, not individual claims, to avoid leakage.
+1. **Root project — TF-IDF baseline:** a lightweight lexical-similarity baseline in `src/citation_drift/`. Similarity is a review signal, not an entailment or truth classifier.
+2. **`alignscore_scaffold/` — AlignScore research scaffold:** a separate continuous-score pipeline with BM25 helper, score export, metadata and a Colab starter notebook. End-to-end installation/inference has NOT been verified.
 
-## Quick start (Python 3.10+)
+A third result is documented separately in `reports/preliminary_scifact_deberta_report.md`: a user-reported SciFact development-set experiment using `cross-encoder/nli-deberta-v3-base`. Do not conflate those NLI metrics with either repository baseline.
+
+## Research questions
+
+- For claims in AI-generated CS literature summaries, how does evidence context (abstract-only vs automatically retrieved full-text passages) affect claim-level citation-support evaluation?
+- How much verification error is associated with retrieval failure, comparing BM25-retrieved evidence and human-selected evidence?
+
+## Annotation policy
+
+Support labels: `SUPPORTED`, `PARTIALLY_SUPPORTED`, `NOT_SUPPORTED_IN_INSPECTED_SOURCE`, `CONTRADICTED`.
+
+Evidence availability is a separate field. An inaccessible or unretrieved paper is not proof that a claim is unsupported. See `docs/annotation_guidelines.md` and `alignscore_scaffold/configs/label_policy.md`.
+
+## Quick start: root TF-IDF baseline
+
+Python 3.10+ recommended.
+
 ```bash
 python -m venv .venv
 source .venv/bin/activate
@@ -25,23 +33,27 @@ pytest -q
 python scripts/run_baseline.py --input data/processed/sample_claim_evidence.jsonl --output results/sample_predictions.csv
 ```
 
-## Input format
-One JSON object per line with `claim_id`, `summary_id`, `paper_id`, `claim`, `evidence`, and `evidence_status`. Optional `gold_label` can be supplied. See `docs/data_dictionary.md`.
+This lexical baseline is not a factual-entailment classifier. Synthetic examples are smoke-test fixtures, not scientific evidence.
 
-## Layout
-- `src/citation_drift/`: data loading, baseline scoring and evaluation
-- `scripts/`: command-line entry point
-- `data/processed/`: synthetic smoke-test examples
-- `docs/`: annotation policy and experiment protocol
-- `reports/`: report template
-- `notebooks/`: starter notebook
-- `tests/`: unit tests
+## AlignScore scaffold
 
-## Current status
-This is a starter implementation. No real corpus, trained model checkpoint, or validated research result is included. The TF-IDF baseline is intentionally simple and must be compared against human annotations. Add AlignScore/NLI only after verifying dependencies, checkpoint provenance, license and end-to-end execution.
+See `alignscore_scaffold/README.md`. It requires a compatible official AlignScore environment and checkpoint not bundled here. Its import, checkpoint loading, inference and tests remain TEST REQUIRED. The AlignScore output is a continuous score, not a validated four-class prediction.
 
-## Research workflow
-Define inclusion criteria; acquire a permitted corpus; generate and preserve summaries; segment atomic claims; map claims to cited papers; inspect source passages; annotate independently; adjudicate; run baselines; evaluate on paper-level splits; report class-wise metrics, macro-F1, coverage, agreement and uncertainty.
+## Repository layout
 
-## License
-See `LICENSE`. Third-party datasets, papers, models and tools remain subject to their own licenses.
+- `src/citation_drift/`: root TF-IDF baseline and data/evaluation utilities
+- `scripts/`: root baseline command
+- `tests/`: root tests
+- `alignscore_scaffold/`: separate AlignScore pipeline, config, synthetic fixture, Colab notebook and tests
+- `docs/`: research protocol, annotation, data dictionary and reproduction notes
+- `reports/`: preliminary experiment report and template
+- `paper/overleaf/`: IEEE conference LaTeX and BibTeX draft
+- `prompts/`: fixed research prompt templates
+
+## Reproducibility and limitations
+
+No real research corpus or model checkpoint is bundled. Dataset release and redistribution terms must be checked at the official source. The separate SciFact/DeBERTa metrics are reported by the project author; its original executable notebook/script and raw outputs are not included here. AlignScore has not been reproduced end-to-end. Paper-level splitting is required to avoid leakage; thresholds must be selected on development data only and frozen before test evaluation.
+
+## License and third-party materials
+
+Review `LICENSE` and ensure it reflects the repository owner's intent. Third-party datasets, papers, model weights and software remain subject to their own terms. Do not upload credentials, restricted PDFs, private annotations or non-redistributable checkpoints. The `.gitignore` excludes common secrets, local environments, model weights, private datasets and generated outputs.
