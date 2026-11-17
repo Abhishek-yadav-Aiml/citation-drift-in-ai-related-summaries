@@ -1,59 +1,111 @@
 # Detecting Citation Drift in AI-Generated Literature Summaries
 
-Research repository for evaluating whether claims in AI-generated scientific literature summaries are supported by their cited source papers.
+[![Tests](https://github.com/Abhishek-yadav-Aiml/citation-drift-in-ai-related-summaries/actions/workflows/tests.yml/badge.svg)](https://github.com/Abhishek-yadav-Aiml/citation-drift-in-ai-related-summaries/actions/workflows/tests.yml)
 
-## Two distinct code paths
+A research codebase for examining whether factual claims in scientific literature summaries are supported by the papers cited for them.
 
-1. **Root project — TF-IDF baseline:** a lightweight lexical-similarity baseline in `src/citation_drift/`. Similarity is a review signal, not an entailment or truth classifier.
-2. **`alignscore_scaffold/` — AlignScore research scaffold:** a separate continuous-score pipeline with BM25 helper, score export, metadata and a Colab starter notebook. End-to-end installation/inference has NOT been verified.
+## Repository scope
 
-A third result is documented separately in `reports/preliminary_scifact_deberta_report.md`: a user-reported SciFact development-set experiment using `cross-encoder/nli-deberta-v3-base`. Do not conflate those NLI metrics with either repository baseline.
+The repository currently contains two code paths:
 
-## Research questions
+1. **Root TF-IDF baseline** — a lightweight lexical-similarity review signal in `src/citation_drift/`. It flags claim/evidence text pairs for review. It does **not** predict whether a claim is true or supported.
+2. **AlignScore scaffold** — an isolated optional pipeline in `alignscore_scaffold/` that calls the external AlignScore package and returns a continuous score. Its full model installation, checkpoint loading and end-to-end inference have not yet been verified.
 
-- For claims in AI-generated CS literature summaries, how does evidence context (abstract-only vs automatically retrieved full-text passages) affect claim-level citation-support evaluation?
-- How much verification error is associated with retrieval failure, comparing BM25-retrieved evidence and human-selected evidence?
+The repository also contains an IEEE LaTeX draft and BibTeX references. It does not contain full-text PDFs of the referenced papers.
 
-## Annotation policy
+## Research questions in the protocol
 
-Support labels: `SUPPORTED`, `PARTIALLY_SUPPORTED`, `NOT_SUPPORTED_IN_INSPECTED_SOURCE`, `CONTRADICTED`.
+- For claims in AI-generated computer-science literature summaries, how does evidence context (abstract-only versus retrieved full-text passages) affect claim-level citation-support assessment?
+- How should retrieval failure and inaccessible evidence be separated from genuinely unsupported or contradicted claims?
 
-Evidence availability is a separate field. An inaccessible or unretrieved paper is not proof that a claim is unsupported. See `docs/annotation_guidelines.md` and `alignscore_scaffold/configs/label_policy.md`.
+See [research decisions](docs/research_decisions.md), [experiment protocol](docs/experiment_protocol.md), [annotation guidelines](docs/annotation_guidelines.md), and the [pilot annotation specification](docs/annotation_guideline_pilot_spec.md).
 
-## Quick start: root TF-IDF baseline
+## Evidence and annotation policy
 
-Python 3.10+ recommended.
+Support labels:
+- `SUPPORTED`
+- `PARTIALLY_SUPPORTED`
+- `NOT_SUPPORTED_IN_INSPECTED_SOURCE`
+- `CONTRADICTED`
+
+Evidence availability is a separate field:
+- `available`
+- `not_retrieved`
+- `inaccessible`
+- `not_provided`
+
+An inaccessible or unretrieved paper is not evidence that a claim is unsupported. Exact schema details are in [data_dictionary.md](docs/data_dictionary.md) and [schema.json](data/processed/schema.json).
+
+## Quick start: root TF-IDF review baseline
+
+Python 3.10 or newer is recommended.
 
 ```bash
 python -m venv .venv
 source .venv/bin/activate
 python -m pip install --upgrade pip
-pip install -r requirements.txt
-pytest -q
-python scripts/run_baseline.py --input data/processed/sample_claim_evidence.jsonl --output results/sample_predictions.csv
+python -m pip install -r requirements.txt
+python -m pytest -q
+python scripts/run_baseline.py \
+  --input data/processed/sample_claim_evidence.jsonl \
+  --output results/sample_predictions.csv
 ```
 
-This lexical baseline is not a factual-entailment classifier. Synthetic examples are smoke-test fixtures, not scientific evidence.
+The sample file contains five invented examples for software checks only. It is not research data. Records with unavailable evidence are deliberately not scored. The default similarity cutoff (0.15) is a configurable review heuristic, not a validated decision threshold.
 
-## AlignScore scaffold
+## Optional AlignScore scaffold
 
-See `alignscore_scaffold/README.md`. It requires a compatible official AlignScore environment and checkpoint not bundled here. Its import, checkpoint loading, inference and tests remain TEST REQUIRED. The AlignScore output is a continuous score, not a validated four-class prediction.
+See [alignscore_scaffold/README.md](alignscore_scaffold/README.md). Its core requirements file is sufficient for the small helper tests, not for installing the full AlignScore package. An authorized compatible checkpoint is required and is not included. Model weights and generated results are excluded by `.gitignore`.
 
-## Repository layout
+Run commands from inside `alignscore_scaffold/`. The notebook at [00_run_pipeline_colab.ipynb](alignscore_scaffold/notebooks/00_run_pipeline_colab.ipynb) clones this repository and demonstrates the setup path. A synthetic smoke test is not a research evaluation.
 
-- `src/citation_drift/`: root TF-IDF baseline and data/evaluation utilities
-- `scripts/`: root baseline command
-- `tests/`: root tests
-- `alignscore_scaffold/`: separate AlignScore pipeline, config, synthetic fixture, Colab notebook and tests
-- `docs/`: research protocol, annotation, data dictionary and reproduction notes
-- `reports/`: preliminary experiment report and template
-- `paper/overleaf/`: IEEE conference LaTeX and BibTeX draft
-- `prompts/`: fixed research prompt templates
+If binary metrics are requested from AlignScore, the script selects rows from the explicit development partition (default `dev`). Select the threshold on development data only and freeze it before any held-out evaluation. AlignScore scores are continuous and are not validated four-class predictions.
 
-## Reproducibility and limitations
+## Bibliography and paper files
 
-No real research corpus or model checkpoint is bundled. Dataset release and redistribution terms must be checked at the official source. The separate SciFact/DeBERTa metrics are reported by the project author; its original executable notebook/script and raw outputs are not included here. AlignScore has not been reproduced end-to-end. Paper-level splitting is required to avoid leakage; thresholds must be selected on development data only and frozen before test evaluation.
+- [IEEE manuscript source](paper/overleaf/main.tex)
+- [BibTeX file](paper/overleaf/references.bib)
+- [Bibliography/source-paper catalogue](docs/references_catalogue.md)
 
-## License and third-party materials
+The catalogue contains five bibliographic entries and links to their publisher, proceedings or author-hosted records. **The cited source-paper PDFs are not uploaded.** Obtain them from the official access pages and follow the applicable copyright and license terms. The IEEE LaTeX source is not a compiled PDF.
 
-Review `LICENSE` and ensure it reflects the repository owner's intent. Third-party datasets, papers, model weights and software remain subject to their own terms. Do not upload credentials, restricted PDFs, private annotations or non-redistributable checkpoints. The `.gitignore` excludes common secrets, local environments, model weights, private datasets and generated outputs.
+## Repository structure
+
+```text
+.
+├── alignscore_scaffold/   # Separate AlignScore adapter, tests and Colab notebook
+├── data/
+│   ├── processed/         # Synthetic claim/evidence examples and JSON schema
+│   └── raw/               # Instructions; no corpus is bundled
+├── docs/                  # Protocol, annotations, data dictionary, references
+├── models/                # Instructions only; no model weights
+├── paper/overleaf/        # IEEE LaTeX source and BibTeX
+├── prompts/               # Research workflow prompt templates
+├── reports/               # Report template and experiment status note
+├── scripts/               # Root baseline CLI
+├── src/citation_drift/    # Root TF-IDF baseline package
+└── tests/                 # Root baseline tests
+```
+
+## Verification status
+
+| Component | Current status |
+|---|---|
+| Root data loader and TF-IDF baseline | Implemented; automated tests run in GitHub Actions |
+| Root CLI | Included in automated smoke test |
+| Unavailable-evidence handling | Records are retained but not assigned a similarity score |
+| AlignScore helper tests | Run separately in GitHub Actions |
+| Official AlignScore installation/checkpoint inference | Not yet verified |
+| Real research corpus and annotated dataset | Not included |
+| Full text of the five referenced papers | Not included; metadata and links only |
+| IEEE manuscript | LaTeX source and BibTeX included; compiled PDF not included |
+
+Do not present synthetic examples as scientific findings. Do not claim AlignScore results until checkpoint-backed inference has been run and outputs have been preserved.
+
+## Reproducibility
+
+For each actual run, retain dataset version and license, model/package versions, model checkpoint provenance and SHA-256, prompts and generation settings, paper-level split IDs, random seed, exact command, raw output and evaluation script. Split by source paper to avoid leakage. Record annotators' independent labels before adjudication.
+
+## Contributing and license
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for development checks and data-handling rules. The current [LICENSE](LICENSE) is an all-rights-reserved notice; this repository is public to view but is not granted an open-source reuse license. Third-party datasets, papers, checkpoints and tools remain subject to their own terms.
