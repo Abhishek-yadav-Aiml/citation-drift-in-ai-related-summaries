@@ -82,7 +82,8 @@ def test_four_class_evaluation():
     labels = ["SUPPORTED", "CONTRADICTED", "PARTIALLY_SUPPORTED"]
     result = evaluate(labels, labels)
     assert result["accuracy"] == 1.0
-    assert result["macro_f1"] == 1.0
+    # The fixed four-class metric includes CONTRADICTED, which has zero support here.
+    assert result["macro_f1"] == 0.75
 
 
 def test_evaluation_rejects_unannotated():
