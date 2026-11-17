@@ -17,9 +17,17 @@ data/raw/*
 !data/raw/README.md
 data/interim/*
 data/annotations/*
+data/processed/*
+!data/processed/README.md
+!data/processed/schema.json
+!data/processed/sample_claim_evidence.jsonl
+!data/processed/annotation_template.csv
 alignscore_scaffold/data/raw/*
 alignscore_scaffold/data/interim/*
 alignscore_scaffold/data/annotations/*
+alignscore_scaffold/data/processed/*
+!alignscore_scaffold/data/processed/schema.json
+!alignscore_scaffold/data/processed/sample_synthetic.jsonl
 
 # Model weights and generated results
 models/*
