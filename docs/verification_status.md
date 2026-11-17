@@ -1,13 +1,14 @@
 # Repository verification status
 
 **Audited branch:** `main`  
-**Latest verified code-bearing commit:** `9baea4f3d263011c6dd49b45ff2850fcf814ea6d`
+**Latest successful GitHub Actions run:** [#32](https://github.com/Abhishek-yadav-Aiml/citation-drift-in-ai-related-summaries/actions/runs/44169690900)  
+**Verified commit:** `f62a836c44c5b1174c38158e232f463530161ec6`
 
-The commits after the verified code-bearing commit changed only documentation, README text, schemas and data templates. No executable Python source or test files changed in those later commits.
+The two commits after the verified commit changed only `.gitignore` and the README repository tree. No executable source code, test files, input data, schemas or workflow definitions changed after run #32.
 
 ## Automated verification
 
-GitHub Actions run [#18](https://github.com/Abhishek-yadav-Aiml/citation-drift-in-ai-related-summaries/actions/runs/44168397148) completed successfully on the latest code-bearing commit.
+All six GitHub Actions matrix jobs completed successfully.
 
 | Workflow check | Python versions | Outcome |
 |---|---|---|
