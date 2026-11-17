@@ -36,6 +36,11 @@ alignscore_scaffold/models/*
 *.ckpt
 *.pt
 *.pth
+*.safetensors
+*.bin
+*.h5
+*.hdf5
+*.onnx
 results/*
 !results/.gitkeep
 alignscore_scaffold/results/*
