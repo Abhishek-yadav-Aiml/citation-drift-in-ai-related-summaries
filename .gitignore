@@ -4,11 +4,30 @@ __pycache__/
 .venv/
 venv/
 .env
+.env.*
+!.env.example
+*.pem
+*.key
+*.token
 .DS_Store
 .ipynb_checkpoints/
-results/*
-!results/.gitkeep
-models/*
-!models/README.md
+
+# Private or locally downloaded data
 data/raw/*
 !data/raw/README.md
+data/interim/*
+data/annotations/*
+alignscore_scaffold/data/raw/*
+alignscore_scaffold/data/interim/*
+alignscore_scaffold/data/annotations/*
+
+# Model weights and generated results
+models/*
+!models/README.md
+alignscore_scaffold/models/*
+*.ckpt
+*.pt
+*.pth
+results/*
+!results/.gitkeep
+alignscore_scaffold/results/*
