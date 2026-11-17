@@ -12,7 +12,7 @@ This is an isolated, optional scoring scaffold. It is separate from the root TF-
 **It does not train AlignScore. It does not produce a validated four-class classifier.** An AlignScore score is a continuous consistency signal and requires a development-set threshold for any binary analysis.
 
 ## Folder and paths
-Run commands from inside `alignscore_scaffold/`. The checkpoint path is relative to this folder unless an absolute path is supplied. No checkpoint or research dataset is stored in Git. The bundled `data/processed/sample_synthetic.jsonl` is invented smoke-test data only.
+Run commands from inside `alignscore_scaffold/`. The checkpoint path is relative to this folder unless an absolute path is supplied. No checkpoint or research dataset is stored in Git. The bundled `data/processed/sample_synthetic.jsonl` is invented smoke-test data only. See the [input schema](data/processed/schema.json).
 
 ## Core scaffold tests
 Python 3.10+ is recommended.
@@ -43,17 +43,22 @@ From this directory, after a compatible package and checkpoint are installed:
 This only tests wiring on synthetic examples. It is not a research evaluation.
 
 ## Real experiment input
-Prepare a JSONL file under a licensed data location with at least:
+Prepare a JSONL file under a licensed data location using the linked schema. Required fields are:
 - `example_id`: unique example ID
 - `source_paper_id`: stable paper grouping key
 - `claim`: atomic claim text
 - `evidence`: inspected evidence passage
-- Optional `gold_label`: one of SUPPORTED, PARTIALLY_SUPPORTED, NOT_SUPPORTED_IN_INSPECTED_SOURCE, CONTRADICTED
 
-Do not submit inaccessible or unretrieved evidence to the scorer as empty text. Record its evidence-availability status in the annotation data and exclude it from scoring until valid evidence is available. See `configs/label_policy.md`.
+Optional fields include `claim_id`, `partition` and `gold_label`. Do not submit inaccessible or unretrieved evidence to the scorer as empty text. Record its evidence-availability status in the annotation data and exclude it from scoring until valid evidence is available. See `configs/label_policy.md`.
 
 ## Optional binary metrics
 If using `--threshold`, select it on development data only and freeze it before test. The default binary mapping includes only SUPPORTED (positive) and NOT_SUPPORTED_IN_INSPECTED_SOURCE (negative). Partial and contradicted cases are excluded from that binary calculation and must not be silently recoded.
+
+For a previously selected development threshold, use an explicit development partition:
+
+    python scripts/run_pipeline.py --input data/processed/your_dev.jsonl --output results/dev_predictions.csv --checkpoint models/AlignScore-base.ckpt --threshold "$DEV_THRESHOLD" --evaluation-partition dev
+
+The script filters metric calculation to the requested partition; it does not choose a threshold for you.
 
 ## Current validation status
 - JSONL/preprocessing/retrieval/evaluation helper tests are included.
