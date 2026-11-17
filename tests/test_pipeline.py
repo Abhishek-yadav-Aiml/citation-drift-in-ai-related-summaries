@@ -62,6 +62,18 @@ def test_loader_rejects_empty_available_evidence(tmp_path):
         load_jsonl(path)
 
 
+def test_loader_rejects_non_string_label(tmp_path):
+    row = {
+        "claim_id": "c1", "summary_id": "s1", "paper_id": "p1",
+        "claim": "A factual statement", "evidence": "A source passage",
+        "evidence_status": "available", "gold_label": ["SUPPORTED"]
+    }
+    path = tmp_path / "invalid_label.jsonl"
+    path.write_text(json.dumps(row), encoding="utf-8")
+    with pytest.raises(ValueError, match="invalid gold_label"):
+        load_jsonl(path)
+
+
 def test_loader_allows_empty_inaccessible_evidence(tmp_path):
     row = {
         "claim_id": "c1",
