@@ -1,0 +1,22 @@
+project: citation-drift
+seed: 42
+baseline:
+  name: AlignScore-base
+  backbone: roberta-base
+  evaluation_mode: nli_sp
+  device: cpu
+  batch_size: 1
+  checkpoint: models/AlignScore-base.ckpt
+dataset:
+  input: data/processed/claim_evidence.jsonl
+  group_key: source_paper_id
+retrieval:
+  enabled: false
+  top_k: 5
+evaluation:
+  threshold: null
+  positive_label: SUPPORTED
+  negative_label: NOT_SUPPORTED_IN_INSPECTED_SOURCE
+output:
+  predictions: results/alignscore_predictions.csv
+  metrics: results/metrics.json
