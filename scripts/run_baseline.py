@@ -1,6 +1,11 @@
 #!/usr/bin/env python3
 import argparse
+import sys
 from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "src"))
+
 import pandas as pd
 from citation_drift.data import load_jsonl
 from citation_drift.baseline import add_baseline_fields
