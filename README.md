@@ -51,7 +51,7 @@ python scripts/run_baseline.py \
   --output results/sample_predictions.csv
 ```
 
-The sample file contains five invented examples for software checks only. It is not research data. Records with unavailable evidence are deliberately not scored. The default similarity cutoff (0.15) is a configurable review heuristic, not a validated decision threshold.
+The sample file contains five invented examples for software checks only. It is not research data. Records with unavailable evidence are deliberately not scored. The default similarity cutoff (0.15) is a configurable review heuristic, not a validated decision threshold. The command also writes a JSON run-metadata file beside the CSV.
 
 ## Optional AlignScore scaffold
 
@@ -108,4 +108,4 @@ For each actual run, retain dataset version and license, model/package versions,
 
 ## Contributing and license
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for development checks and data-handling rules. The current [LICENSE](LICENSE) is an all-rights-reserved notice; this repository is public to view but is not granted an open-source reuse license. Third-party datasets, papers, checkpoints and tools remain subject to their own terms.
+See [CONTRIBUTING.md](CONTRIBUTING.md) for development checks and [research_data_management.md](docs/research_data_management.md) for data-handling and release rules. [CHANGELOG.md](CHANGELOG.md) records repository-level changes. The current [LICENSE](LICENSE) is an all-rights-reserved notice; this repository is public to view but is not granted an open-source reuse license. Third-party datasets, papers, checkpoints and tools remain subject to their own terms.
