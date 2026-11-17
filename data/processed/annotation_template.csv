@@ -1,0 +1,1 @@
+record_id,summary_id,claim_group_id,claim_id,paper_id,citation_marker,original_sentence,atomic_claim,evidence_status,evidence_text,source_location,gold_label,annotator_id,annotation_round,rationale,adjudicated_label,adjudication_notes,annotation_guide_version,source_version,access_date
