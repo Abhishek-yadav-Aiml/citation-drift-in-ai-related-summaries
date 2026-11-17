@@ -1,111 +1,111 @@
-\\documentclass[conference]{IEEEtran}
-\\usepackage{cite}
-\\usepackage{amsmath,amssymb}
-\\usepackage{booktabs}
-\\usepackage{array}
-\\usepackage{url}
-\\usepackage{hyperref}
+\documentclass[conference]{IEEEtran}
+\usepackage{cite}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{url}
+\usepackage{hyperref}
 
-\\title{A Preliminary Study on Scientific Claim Verification to Identify Citation Drift in AI-Generated Literature Summaries}
-\\author{
-\\IEEEauthorblockN{[Author Name]}
-\\IEEEauthorblockA{[Department / School]\\\\
-[Institution]\\\\
-[City, Country]\\\\
+\title{A Preliminary Study on Scientific Claim Verification to Identify Citation Drift in AI-Generated Literature Summaries}
+\author{
+\IEEEauthorblockN{[Author Name]}
+\IEEEauthorblockA{[Department / School]\\
+[Institution]\\
+[City, Country]\\
 [Email Address]}
 }
-\\begin{document}
-\\maketitle
+\begin{document}
+\maketitle
 
-\\begin{abstract}
-We study a preliminary component-level baseline for scientific claim verification relevant to citation drift in AI-generated literature summaries. A pretrained three-way natural language inference (NLI) cross-encoder, \\texttt{cross-encoder/nli-deberta-v3-base}, is evaluated on 338 claim--evidence pairs from the SciFact development split. Entailment is mapped to SUPPORT, contradiction to CONTRADICT, and neutral predictions are retained as NEUTRAL. Counting NEUTRAL as incorrect gives 45.56\\% overall accuracy. The model makes a directional (non-neutral) prediction for 50.30\\% of examples; among those predictions, 90.59\\% are correct (conditional macro F1 = 0.91). This is a preliminary claim-verification baseline, not a direct measurement of citation-drift detection in AI-generated summaries.
-\\end{abstract}
+\begin{abstract}
+We study a preliminary component-level baseline for scientific claim verification relevant to citation drift in AI-generated literature summaries. A pretrained three-way natural language inference (NLI) cross-encoder, \texttt{cross-encoder/nli-deberta-v3-base}, is evaluated on 338 claim--evidence pairs from the SciFact development split. Entailment is mapped to SUPPORT, contradiction to CONTRADICT, and neutral predictions are retained as NEUTRAL. Counting NEUTRAL as incorrect gives 45.56\% overall accuracy. The model makes a directional (non-neutral) prediction for 50.30\% of examples; among those predictions, 90.59\% are correct (conditional macro F1 = 0.91). This is a preliminary claim-verification baseline, not a direct measurement of citation-drift detection in AI-generated summaries.
+\end{abstract}
 
-\\begin{IEEEkeywords}
+\begin{IEEEkeywords}
 Citation drift, scientific claim verification, natural language inference, literature summarization, SciFact, factual consistency.
-\\end{IEEEkeywords}
+\end{IEEEkeywords}
 
-\\section{Introduction}
+\section{Introduction}
 Large language models can generate summaries of scientific papers and synthesize findings across studies. Such summaries may alter or omit qualifiers, report results with a different scope, or attach citations that do not support the stated claim. These inconsistencies motivate the study of citation drift.
 
 Checking a summarized claim against source text is closely related to natural language inference (NLI). The summary claim can be treated as a hypothesis and source evidence as a premise. Scientific terminology, numerical details, qualifiers, and multi-source reasoning make this task challenging.
 
 This preliminary experiment evaluates a pretrained NLI model on claim--evidence pairs from SciFact. It reports both overall accuracy and selective performance when neutral predictions are excluded. SciFact is a scientific claim-verification dataset, not a dataset of AI-generated literature summaries and their citations.
 
-\\section{Related Work}
-\\subsection{Scientific Claim Verification}
-Wadden \\emph{et al.} introduced SciFact, a dataset of scientific claims paired with evidence from research-paper abstracts and support/refutation labels with rationales \\cite{wadden2020fact}. We use its development split for a component-level experiment; we do not treat SciFact as a citation-drift benchmark.
+\section{Related Work}
+\subsection{Scientific Claim Verification}
+Wadden \emph{et al.} introduced SciFact, a dataset of scientific claims paired with evidence from research-paper abstracts and support/refutation labels with rationales \cite{wadden2020fact}. We use its development split for a component-level experiment; we do not treat SciFact as a citation-drift benchmark.
 
-\\subsection{Natural Language Inference}
-Natural language inference commonly formulates sentence-pair reasoning as entailment, contradiction, or neutral classification. SNLI and MultiNLI are established resources for this task \\cite{bowman2015large,williams2018broad}.
+\subsection{Natural Language Inference}
+Natural language inference commonly formulates sentence-pair reasoning as entailment, contradiction, or neutral classification. SNLI and MultiNLI are established resources for this task \cite{bowman2015large,williams2018broad}.
 
-\\subsection{DeBERTa}
-DeBERTa uses disentangled attention and an enhanced mask decoder \\cite{he2021deberta}. DeBERTa-v3 uses ELECTRA-style replaced-token detection and gradient-disentangled embedding sharing \\cite{he2023debertav3}. We use the pretrained NLI cross-encoder identified above without fine-tuning.
+\subsection{DeBERTa}
+DeBERTa uses disentangled attention and an enhanced mask decoder \cite{he2021deberta}. DeBERTa-v3 uses ELECTRA-style replaced-token detection and gradient-disentangled embedding sharing \cite{he2023debertav3}. We use the pretrained NLI cross-encoder identified above without fine-tuning.
 
-\\section{Method}
-\\subsection{Task Formulation}
+\section{Method}
+\subsection{Task Formulation}
 Each example contains a scientific claim $c$ and evidence text $e$. The evidence is provided as the premise and the claim as the hypothesis. The NLI model predicts CONTRADICTION, ENTAILMENT, or NEUTRAL. For comparison with SciFact gold labels, ENTAILMENT maps to SUPPORT and CONTRADICTION maps to CONTRADICT.
 
-\\subsection{Inference}
+\subsection{Inference}
 The model output indices are interpreted as 0 = contradiction, 1 = entailment, and 2 = neutral. No additional model training or optimization is performed on the development examples.
 
-\\subsection{Evaluation}
+\subsection{Evaluation}
 Overall accuracy is calculated over all 338 examples, counting NEUTRAL as incorrect because the gold data contains SUPPORT and CONTRADICT only. Coverage is the fraction of examples for which the model predicts SUPPORT or CONTRADICT. Conditional accuracy and macro F1 are calculated only on this non-neutral subset.
 
-\\section{Experimental Setup}
-\\subsection{Dataset}
+\section{Experimental Setup}
+\subsection{Dataset}
 The SciFact development split is used to construct 338 claim--evidence pairs: 216 SUPPORT and 122 CONTRADICT according to the reported gold labels.
 
-\\subsection{Reproducibility}
+\subsection{Reproducibility}
 The model identifier and dataset split are recorded in the experiment notes. Exact runtime package versions, model revision, dataset release identifier, original runnable notebook/script, and raw predictions were not retained in the repository at the time this draft was prepared. Those artifacts must be recovered before claiming full reproduction.
 
-\\section{Results and Discussion}
-The model produced 76 SUPPORT, 94 CONTRADICT, and 168 NEUTRAL predictions. Thus, it made a non-neutral prediction on 170 of 338 examples, for 50.30\\% coverage.
+\section{Results and Discussion}
+The model produced 76 SUPPORT, 94 CONTRADICT, and 168 NEUTRAL predictions. Thus, it made a non-neutral prediction on 170 of 338 examples, for 50.30\% coverage.
 
-\\begin{table}[t]
-\\centering
-\\caption{Prediction distribution over 338 pairs.}
-\\begin{tabular}{lr}
-\\toprule
-Predicted class & Count\\\\
-\\midrule
-SUPPORT & 76\\\\
-CONTRADICT & 94\\\\
-NEUTRAL & 168\\\\
-\\midrule
-Total & 338\\\\
-\\bottomrule
-\\end{tabular}
-\\end{table}
+\begin{table}[t]
+\centering
+\caption{Prediction distribution over 338 pairs.}
+\begin{tabular}{lr}
+\toprule
+Predicted class & Count\\
+\midrule
+SUPPORT & 76\\
+CONTRADICT & 94\\
+NEUTRAL & 168\\
+\midrule
+Total & 338\\
+\bottomrule
+\end{tabular}
+\end{table}
 
-The full confusion matrix, with gold labels as rows and predictions as columns, is shown in Table~\\ref{tab:cm}.
+The full confusion matrix, with gold labels as rows and predictions as columns, is shown in Table~\ref{tab:cm}.
 
-\\begin{table}[t]
-\\centering
-\\caption{Full confusion matrix.}
-\\label{tab:cm}
-\\begin{tabular}{lrrr}
-\\toprule
-Gold / predicted & SUPPORT & CONTRADICT & NEUTRAL\\\\
-\\midrule
-SUPPORT & 73 & 13 & 130\\\\
-CONTRADICT & 3 & 81 & 38\\\\
-\\bottomrule
-\\end{tabular}
-\\end{table}
+\begin{table}[t]
+\centering
+\caption{Full confusion matrix.}
+\label{tab:cm}
+\begin{tabular}{lrrr}
+\toprule
+Gold / predicted & SUPPORT & CONTRADICT & NEUTRAL\\
+\midrule
+SUPPORT & 73 & 13 & 130\\
+CONTRADICT & 3 & 81 & 38\\
+\bottomrule
+\end{tabular}
+\end{table}
 
-Overall accuracy is 45.56\\% (154/338). Excluding NEUTRAL leaves 170 examples, of which 154 are correctly classified, giving 90.59\\% conditional accuracy. The reported conditional macro F1 is 0.91.
+Overall accuracy is 45.56\% (154/338). Excluding NEUTRAL leaves 170 examples, of which 154 are correctly classified, giving 90.59\% conditional accuracy. The reported conditional macro F1 is 0.91.
 
 These results illustrate a coverage--accuracy trade-off. The conditional measure applies to only half of the examples and must be reported together with coverage. The neutral predictions may reflect uncertainty or a mismatch between model decision boundaries and evidence presentation; the current measurements do not establish the cause.
 
-\\section{Limitations}
+\section{Limitations}
 First, SciFact is a scientific claim-verification dataset, not a benchmark of AI-generated literature summaries and their citations. Second, only the development split is reported; no independent test-set evaluation is presented. Third, the gold labels contain two classes while the model predicts three, and counting neutral as incorrect affects overall accuracy. Fourth, conditional accuracy applies only to non-neutral predictions. Fifth, exact runtime configuration, package versions, model revision, dataset release details and raw outputs are incomplete. Finally, this experiment does not evaluate retrieval quality, evidence aggregation across multiple papers, atomic claim decomposition or annotator agreement.
 
-\\section{Conclusion and Future Work}
-This preliminary baseline evaluates a pretrained DeBERTa-v3 NLI cross-encoder on 338 SciFact development claim--evidence pairs. It achieves 45.56\\% overall accuracy when neutral predictions are counted incorrect, predicts a non-neutral label for 50.30\\% of examples, and achieves 90.59\\% conditional accuracy on that subset. These metrics should not be interpreted as direct citation-drift detection performance.
+\section{Conclusion and Future Work}
+This preliminary baseline evaluates a pretrained DeBERTa-v3 NLI cross-encoder on 338 SciFact development claim--evidence pairs. It achieves 45.56\% overall accuracy when neutral predictions are counted incorrect, predicts a non-neutral label for 50.30\% of examples, and achieves 90.59\% conditional accuracy on that subset. These metrics should not be interpreted as direct citation-drift detection performance.
 
 Future work should construct a benchmark from AI-generated literature summaries, segment claims into atomic propositions, map each claim to its cited paper, retrieve relevant source passages, and obtain human-verified support annotations. The protocol must distinguish genuinely unsupported claims from cases where evidence is inaccessible or not retrieved.
 
-\\bibliographystyle{IEEEtran}
-\\bibliography{references}
-\\end{document}
+\bibliographystyle{IEEEtran}
+\bibliography{references}
+\end{document}
