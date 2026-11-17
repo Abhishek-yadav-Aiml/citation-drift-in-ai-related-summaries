@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AlignScore claim-evidence input record",
+  "type": "object",
+  "required": ["example_id", "source_paper_id", "claim", "evidence"],
+  "properties": {
+    "example_id": {"type": "string", "minLength": 1},
+    "source_paper_id": {"type": "string", "minLength": 1},
+    "claim_id": {"type": "string"},
+    "claim": {"type": "string", "minLength": 1},
+    "evidence": {"type": "string", "minLength": 1},
+    "partition": {"type": "string"},
+    "gold_label": {
+      "type": "string",
+      "enum": [
+        "SUPPORTED",
+        "PARTIALLY_SUPPORTED",
+        "NOT_SUPPORTED_IN_INSPECTED_SOURCE",
+        "CONTRADICTED"
+      ]
+    }
+  },
+  "additionalProperties": true
+}
