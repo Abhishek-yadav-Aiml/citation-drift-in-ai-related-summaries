@@ -5,7 +5,7 @@ def normalize_whitespace(text):
         raise TypeError("text must be str")
     if not text.strip():
         raise ValueError("text cannot be empty")
-    return re.sub(r"\\s+", " ", text).strip()
+    return re.sub(r"\s+", " ", text).strip()
 
 def prepare_records(records):
     output = []
