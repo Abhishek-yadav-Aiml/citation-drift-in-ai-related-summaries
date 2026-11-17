@@ -5,6 +5,7 @@ import pytest
 
 from citation_drift.data import load_jsonl
 from citation_drift.baseline import add_baseline_fields, score_claims
+from citation_drift.evaluation import evaluate
 
 DATA = Path(__file__).parents[1] / "data/processed/sample_claim_evidence.jsonl"
 
@@ -75,3 +76,15 @@ def test_loader_allows_empty_inaccessible_evidence(tmp_path):
     path.write_text(json.dumps(row), encoding="utf-8")
     loaded = load_jsonl(path)
     assert len(loaded) == 1
+
+
+def test_four_class_evaluation():
+    labels = ["SUPPORTED", "CONTRADICTED", "PARTIALLY_SUPPORTED"]
+    result = evaluate(labels, labels)
+    assert result["accuracy"] == 1.0
+    assert result["macro_f1"] == 1.0
+
+
+def test_evaluation_rejects_unannotated():
+    with pytest.raises(ValueError, match="gold contains labels"):
+        evaluate(["UNANNOTATED"], ["SUPPORTED"])
