@@ -2,7 +2,7 @@ import re
 from rank_bm25 import BM25Okapi
 
 def tokenize(text):
-    return re.findall(r"\\w+", text.lower())
+    return re.findall(r"\w+", text.lower())
 
 def bm25_top_k(claim, passages, top_k=5):
     if not passages or top_k <= 0:
