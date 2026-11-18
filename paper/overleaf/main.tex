@@ -8,11 +8,11 @@
 
 \title{A Preliminary Study on Scientific Claim Verification to Identify Citation Drift in AI-Generated Literature Summaries}
 \author{
-\IEEEauthorblockN{[Author Name]}
-\IEEEauthorblockA{[Department / School]\\
-[Institution]\\
-[City, Country]\\
-[Email Address]}
+\IEEEauthorblockN{Author Name}
+\IEEEauthorblockA{Department / School\\
+Institution\\
+City, Country\\
+Email Address}
 }
 \begin{document}
 \maketitle
@@ -106,6 +106,15 @@ This preliminary baseline evaluates a pretrained DeBERTa-v3 NLI cross-encoder on
 
 Future work should construct a benchmark from AI-generated literature summaries, segment claims into atomic propositions, map each claim to its cited paper, retrieve relevant source passages, and obtain human-verified support annotations. The protocol must distinguish genuinely unsupported claims from cases where evidence is inaccessible or not retrieved.
 
-\bibliographystyle{IEEEtran}
-\bibliography{references}
+\begin{thebibliography}{00}
+\bibitem{wadden2020fact} D. Wadden, S. Lin, K. Lo, L. L. Wang, M. van Zuylen, A. Cohan, and H. Hajishirzi, ``Fact or Fiction: Verifying Scientific Claims,'' in \emph{Proc. EMNLP}, 2020, pp. 7534--7550, doi: 10.18653/v1/2020.emnlp-main.609.
+
+\bibitem{bowman2015large} S. R. Bowman, G. Angeli, C. Potts, and C. D. Manning, ``A Large Annotated Corpus for Learning Natural Language Inference,'' in \emph{Proc. EMNLP}, 2015, pp. 632--642, doi: 10.18653/v1/D15-1075.
+
+\bibitem{williams2018broad} A. Williams, N. Nangia, and S. R. Bowman, ``A Broad-Coverage Challenge Corpus for Sentence Understanding through Inference,'' in \emph{Proc. NAACL-HLT}, 2018, pp. 1112--1122, doi: 10.18653/v1/N18-1101.
+
+\bibitem{he2021deberta} P. He, X. Liu, J. Gao, and W. Chen, ``DeBERTa: Decoding-Enhanced BERT with Disentangled Attention,'' in \emph{Proc. ICLR}, 2021. [Online]. Available: https://arxiv.org/abs/2006.03654.
+
+\bibitem{he2023debertav3} P. He, J. Gao, and W. Chen, ``DeBERTaV3: Improving DeBERTa using ELECTRA-Style Pre-Training with Gradient-Disentangled Embedding Sharing,'' in \emph{Proc. ICLR}, 2023. [Online]. Available: https://openreview.net/forum?id=sE7-XhLxHA.
+\end{thebibliography}
 \end{document}
