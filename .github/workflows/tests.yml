@@ -17,6 +17,9 @@ on:
       - "alignscore_scaffold/requirements-core.txt"
       - "alignscore_scaffold/notebooks/**"
       - "alignscore_scaffold/data/processed/**"
+      - "paper/overleaf/**"
+      - "papers/**"
+      - "README.md"
   pull_request:
     branches: [main]
     paths:
@@ -33,6 +36,9 @@ on:
       - "alignscore_scaffold/requirements-core.txt"
       - "alignscore_scaffold/notebooks/**"
       - "alignscore_scaffold/data/processed/**"
+      - "paper/overleaf/**"
+      - "papers/**"
+      - "README.md"
   workflow_dispatch:
 
 jobs:
