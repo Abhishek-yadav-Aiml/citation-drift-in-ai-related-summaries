@@ -20,7 +20,7 @@ From the repository root, run:
 
 The script downloads the three ACL Anthology PDFs into papers/pdfs/, verifies that each file starts with a PDF signature, and prints SHA-256 checksums. Keep original attribution and license notices alongside unmodified copies.
 
-The automated GitHub workflow builds the IEEE manuscript PDF and publishes it as a downloadable artifact named ieee-manuscript-pdf. Open the Actions run and select Artifacts. A compiled copy is also linked in the task response.
+The automated GitHub workflow now (1) builds the IEEE manuscript PDF as the ieee-manuscript-pdf artifact and (2) downloads the three ACL PDFs and bundles them as acl-source-papers-pdfs. Open the latest successful Actions run and select Artifacts. Both artifacts are retained for 30 days. The compiled PDF is also linked in the task response.
 
 ## Important
 
