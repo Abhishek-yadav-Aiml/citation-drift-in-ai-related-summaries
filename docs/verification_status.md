@@ -1,25 +1,27 @@
 # Repository verification status
 
 **Audited branch:** `main`  
-**Latest successful GitHub Actions run:** [#32](https://github.com/Abhishek-yadav-Aiml/citation-drift-in-ai-related-summaries/actions/runs/44169690900)  
-**Verified commit:** `f62a836c44c5b1174c38158e232f463530161ec6`
-
-The two commits after the verified commit changed only `.gitignore` and the README repository tree. No executable source code, test files, input data, schemas or workflow definitions changed after run #32.
+**Latest asset-publishing workflow:** [#40](https://github.com/Abhishek-yadav-Aiml/citation-drift-in-ai-related-summaries/actions/runs/44222960851)  
+**Asset commit:** `089af2955bed57f9ad66a55205a9f0a5f0405b7b`
 
 ## Automated verification
 
-All six GitHub Actions matrix jobs completed successfully.
+Workflow #40 completed successfully. All jobs passed:
+- Root TF-IDF test suite and sample CLI on Python 3.10, 3.11 and 3.12.
+- AlignScore scaffold helper tests on Python 3.10, 3.11 and 3.12.
+- IEEE LaTeX compilation and PDF publication.
+- Download of three ACL Anthology source-paper PDFs and repository publication.
 
-| Workflow check | Python versions | Outcome |
-|---|---|---|
-| Root TF-IDF baseline tests | 3.10, 3.11, 3.12 | PASS |
-| Root baseline CLI smoke test | 3.10, 3.11, 3.12 | PASS |
-| AlignScore scaffold helper tests | 3.10, 3.11, 3.12 | PASS |
+Earlier successful test logs show 13 root tests and 6 AlignScore scaffold helper tests. The root CLI smoke test writes five synthetic examples. These are software checks only.
 
-Observed test counts:
-- Root test suite: 13 passed.
-- AlignScore scaffold helper suite: 6 passed.
-- Root sample CLI: wrote 5 synthetic sample records to the temporary CSV output.
+## PDFs now committed to main
+
+- `paper/overleaf/main.pdf` — compiled two-page IEEE conference draft.
+- `papers/pdfs/Wadden_2020_Fact_or_Fiction.pdf` — source paper, CC BY 4.0.
+- `papers/pdfs/Bowman_2015_SNLI.pdf` — source paper, CC BY-NC-SA 3.0, non-commercial teaching/research and ShareAlike conditions.
+- `papers/pdfs/Williams_2018_MultiNLI.pdf` — source paper, CC BY 4.0.
+
+The DeBERTa (2021) and DeBERTaV3 (2023) full texts remain official links only because the paper-specific redistribution permissions were not established in the source review.
 
 ## What this verification does not establish
 
@@ -29,14 +31,10 @@ Observed test counts:
 - It does not validate real research data, annotation quality, scientific conclusions or a final paper.
 - Passing synthetic-example tests does not establish research validity.
 
-## Current repository assets
-
-The branch contains a root TF-IDF baseline, a separate AlignScore scaffold, synthetic JSONL examples, two schema files, annotation/source-manifest templates, research and data-management documentation, an IEEE LaTeX draft and its BibTeX bibliography. The source-paper catalogue is metadata and links only; no full-text source-paper PDFs are included.
-
 ## Remaining research validation
 
 1. Add permitted real claim/evidence records with traceable source IDs and dataset provenance.
 2. Complete independent human annotation and adjudication.
 3. Install and run the external AlignScore baseline with a verified checkpoint.
 4. Retain raw predictions, run metadata, error analysis and paper-level split manifests.
-5. Compile and review the LaTeX manuscript after the final verified experiment.
+5. Replace generic author details in the IEEE draft and review the manuscript after the final verified experiment.
