@@ -11,7 +11,7 @@ The repository currently contains two code paths:
 1. **Root TF-IDF baseline** — a lightweight lexical-similarity review signal in `src/citation_drift/`. It flags claim/evidence text pairs for review. It does **not** predict whether a claim is true or supported.
 2. **AlignScore scaffold** — an isolated optional pipeline in `alignscore_scaffold/` that calls the external AlignScore package and returns a continuous score. Its full model installation, checkpoint loading and end-to-end inference have not yet been verified.
 
-The repository also contains an IEEE LaTeX draft and BibTeX references. It does not contain full-text PDFs of the referenced papers.
+The repository also contains an IEEE LaTeX draft, BibTeX references, a paper-access index, and a download script for three ACL papers whose reuse terms are explicit. Two DeBERTa papers are linked to their official hosts rather than mirrored because their individual redistribution licenses were not confirmed.
 
 ## Research questions in the protocol
 
@@ -66,8 +66,9 @@ If binary metrics are requested from AlignScore, the script selects rows from th
 - [IEEE manuscript source](paper/overleaf/main.tex)
 - [BibTeX file](paper/overleaf/references.bib)
 - [Bibliography/source-paper catalogue](docs/references_catalogue.md)
+- [Official full-text paper links and download instructions](papers/README.md)
 
-The catalogue contains five bibliographic entries and links to their publisher, proceedings or author-hosted records. **The cited source-paper PDFs are not uploaded.** Obtain them from the official access pages and follow the applicable copyright and license terms. The IEEE LaTeX source is not a compiled PDF.
+The catalogue contains five bibliographic entries and links to official full-text records. See [papers/README.md](papers/README.md) for official PDF links and reuse terms. Run [the ACL paper download script](papers/download_open_acl_papers.sh) from the repository root to download the three ACL PDFs into papers/pdfs/. The two DeBERTa PDFs are linked but not mirrored pending confirmation of their paper-specific reuse licenses. The IEEE LaTeX source compiles through GitHub Actions; its PDF is published as the ieee-manuscript-pdf workflow artifact.
 
 ## Repository structure
 
@@ -82,6 +83,7 @@ The catalogue contains five bibliographic entries and links to their publisher, 
 ├── docs/                  # Protocol, labels, references, data management and verification
 ├── models/                # Instructions only; no model weights
 ├── paper/overleaf/        # IEEE LaTeX source and BibTeX
+├── papers/                # Official PDF links, license notes and ACL download script
 ├── prompts/               # Research workflow prompt templates
 ├── reports/               # Report template and experiment status note
 ├── scripts/               # Root baseline CLI
@@ -106,7 +108,7 @@ The catalogue contains five bibliographic entries and links to their publisher, 
 | Official AlignScore installation/checkpoint inference | Not yet verified |
 | Real research corpus and annotated dataset | Not included |
 | Full text of the five referenced papers | Not included; metadata and links only |
-| IEEE manuscript | LaTeX source and BibTeX included; compiled PDF not included |
+| IEEE manuscript | LaTeX source and BibTeX included; PDF build published as a GitHub Actions artifact |
 
 Do not present synthetic examples as scientific findings. Do not claim AlignScore results until checkpoint-backed inference has been run and outputs have been preserved.
 
