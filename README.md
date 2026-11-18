@@ -107,8 +107,8 @@ The catalogue contains five bibliographic entries and links to official full-tex
 | AlignScore helper tests | Run separately in GitHub Actions |
 | Official AlignScore installation/checkpoint inference | Not yet verified |
 | Real research corpus and annotated dataset | Not included |
-| Full text of the five referenced papers | Not included; metadata and links only |
-| IEEE manuscript | LaTeX source and BibTeX included; PDF build published as a GitHub Actions artifact |
+| Source-paper PDFs | Three ACL PDFs are committed under papers/pdfs/ after the publishing job succeeds; two DeBERTa papers remain linked only |
+| IEEE manuscript | LaTeX source and BibTeX included; compiled PDF is committed under paper/overleaf/main.pdf after the publishing job succeeds |
 
 Do not present synthetic examples as scientific findings. Do not claim AlignScore results until checkpoint-backed inference has been run and outputs have been preserved.
 
