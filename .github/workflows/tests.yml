@@ -87,35 +87,43 @@ jobs:
       - name: Run scaffold unit tests
         run: python -m pytest -q tests
 
-  build-ieee-manuscript:
-    name: Compile IEEE manuscript PDF
+  publish-research-assets:
+    name: Compile and publish research PDFs
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
-      - name: Compile LaTeX manuscript
+        with:
+          persist-credentials: true
+      - name: Compile IEEE manuscript PDF
         uses: xu-cheng/latex-action@v3
         with:
           root_file: main.tex
           working_directory: paper/overleaf
           args: -pdf -interaction=nonstopmode -halt-on-error
-      - name: Upload compiled PDF artifact
+      - name: Download permitted ACL source-paper PDFs
+        run: bash papers/download_open_acl_papers.sh
+      - name: Commit compiled manuscript and permitted source PDFs
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add paper/overleaf/main.pdf papers/pdfs/*.pdf
+          if git diff --cached --quiet; then
+            echo "Research PDF files already match the generated outputs."
+          else
+            git commit -m "Add compiled IEEE manuscript and licensed ACL source PDFs"
+            git push origin HEAD:main
+          fi
+      - name: Upload compiled manuscript artifact
         uses: actions/upload-artifact@v4
         with:
           name: ieee-manuscript-pdf
           path: paper/overleaf/main.pdf
           if-no-files-found: error
           retention-days: 30
-
-  download-acl-source-papers:
-    name: Download open-licensed ACL source papers
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out repository
-        uses: actions/checkout@v4
-      - name: Download official ACL PDFs
-        run: bash papers/download_open_acl_papers.sh
-      - name: Upload source-paper PDF bundle
+      - name: Upload source-paper bundle artifact
         uses: actions/upload-artifact@v4
         with:
           name: acl-source-papers-pdfs
