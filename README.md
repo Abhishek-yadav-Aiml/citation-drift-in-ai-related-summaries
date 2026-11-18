@@ -68,7 +68,7 @@ If binary metrics are requested from AlignScore, the script selects rows from th
 - [Bibliography/source-paper catalogue](docs/references_catalogue.md)
 - [Official full-text paper links and download instructions](papers/README.md)
 
-The catalogue contains five bibliographic entries and links to official full-text records. See [papers/README.md](papers/README.md) for official PDF links and reuse terms. Run [the ACL paper download script](papers/download_open_acl_papers.sh) from the repository root to download the three ACL PDFs into papers/pdfs/. The two DeBERTa PDFs are linked but not mirrored pending confirmation of their paper-specific reuse licenses. The IEEE LaTeX source compiles through GitHub Actions; its PDF is published as the ieee-manuscript-pdf workflow artifact.
+The catalogue contains five bibliographic entries and links to official full-text records. The three ACL source PDFs are committed under [papers/pdfs/](papers/pdfs/), with reuse notes and SHA-256 checksums. The two DeBERTa papers remain linked to their official hosts because broader redistribution rights were not confirmed. The compiled IEEE manuscript is committed at [paper/overleaf/main.pdf](paper/overleaf/main.pdf). To re-download the three ACL PDFs, run [the download script](papers/download_open_acl_papers.sh).
 
 ## Repository structure
 
@@ -82,7 +82,7 @@ The catalogue contains five bibliographic entries and links to official full-tex
 │   └── source_manifest_template.csv
 ├── docs/                  # Protocol, labels, references, data management and verification
 ├── models/                # Instructions only; no model weights
-├── paper/overleaf/        # IEEE LaTeX source and BibTeX
+├── paper/overleaf/        # IEEE LaTeX source, BibTeX and compiled PDF
 ├── papers/                # Official PDF links, license notes and ACL download script
 ├── prompts/               # Research workflow prompt templates
 ├── reports/               # Report template and experiment status note
